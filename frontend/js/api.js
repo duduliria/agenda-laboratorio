@@ -15,6 +15,11 @@ const API = {
     });
     if (resposta.status === 204) return null;
     const dados = await resposta.json();
+    if (resposta.status === 401 && !url.includes('/api/usuarios/login') && !url.includes('/api/usuarios/cadastro')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('usuario');
+      location.href = `${this.baseURL}/`;
+    }
     if (!resposta.ok) throw new Error(dados.erro || 'Erro na requisicao');
     return dados;
   },
